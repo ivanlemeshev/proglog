@@ -3,5 +3,5 @@ lint:
 .PHONY: lint
 
 test:
-	go test --cover ./...
+	go test --cover -race ./...
 .PHONY: test
