@@ -49,9 +49,18 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Run tests with covarage
+      - name: Instal Codeclimate test reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Run tests with coverage
         uses: paambaati/codeclimate-action@v2.2.4
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        with:
-          coverageCommand: go test --cover -race -coverprofile c.out ./...
+        run: |
+          ./cc-test-reporter before-build
+          go test -race -coverprofile c.out ./...
+          sed -i -e 's/github.com\/ivanlemeshev\/algorithms-go\///g' c.out
+          ./cc-test-reporter after-build
