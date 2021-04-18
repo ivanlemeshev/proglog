@@ -1,3 +1,4 @@
+// Package server implements commit log
 package server
 
 import (
@@ -16,7 +17,9 @@ type Log struct {
 
 // NewLog creates a new Log.
 func NewLog() *Log {
-	return &Log{}
+	var log Log
+
+	return &log
 }
 
 // Append adds a new record to the log.
