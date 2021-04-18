@@ -53,6 +53,6 @@ func (c *Log) Read(offset uint64) (Record, error) {
 
 // Record is a record in the log.
 type Record struct {
-	Value  []byte `json:"value"`
-	Offset uint64 `json:"offset"`
+	Value  []byte
+	Offset uint64
 }

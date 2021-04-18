@@ -3,7 +3,7 @@ package server_test
 import (
 	"testing"
 
-	"github.com/lemeshev/proglog/internal/server"
+	"github.com/ivanlemeshev/proglog/internal/server"
 	"github.com/stretchr/testify/assert"
 )
 

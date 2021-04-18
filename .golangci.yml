@@ -12,6 +12,8 @@ output:
 linters:
   enable-all: true
   fast: false
+  disable:
+    - godox
 
 issues:
   exclude-use-default: false

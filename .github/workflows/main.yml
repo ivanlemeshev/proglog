@@ -55,4 +55,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           coverageCommand: go test --cover -race -coverprofile c.out ./...
-          prefix: github.com/lemeshev/proglog
+          prefix: github.com/ivanlemeshev/proglog
