@@ -20,33 +20,33 @@ jobs:
       - name: Lint
         run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.39.0
         run: ./bin/golangci-lint run -c .golangci.yml ./...
-  test:
-    needs: [lint]
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.16
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-      - name: Test
-        run: make test
-  coverage:
-    needs: [lint, test]
-    name: Coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.16
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
-      - name: Codeclimate
-        uses: paambaati/codeclimate-action@v2.2.4
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        with:
-          coverageCommand: go test -race -coverprofile c.out ./...
+  # test:
+  #   needs: [lint]
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Go 1.16
+  #       uses: actions/setup-go@v1
+  #       with:
+  #         go-version: 1.16
+  #     - name: Check out code into the Go module directory
+  #       uses: actions/checkout@v2
+  #     - name: Test
+  #       run: make test
+  # coverage:
+  #   needs: [lint, test]
+  #   name: Coverage
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Set up Go 1.16
+  #       uses: actions/setup-go@v1
+  #       with:
+  #         go-version: 1.16
+  #     - name: Check out code into the Go module directory
+  #       uses: actions/checkout@v2
+  #     - name: Codeclimate
+  #       uses: paambaati/codeclimate-action@v2.2.4
+  #       env:
+  #         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+  #       with:
+  #         coverageCommand: go test -race -coverprofile c.out ./...
