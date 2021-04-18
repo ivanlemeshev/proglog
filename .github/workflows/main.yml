@@ -54,6 +54,4 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
-          coverageCommand: |
-            go test --cover -race -coverprofile c.out ./...
-            sed -i -e 's/github.com\/ivanlemeshev\/proglog\///g' c.out
+          coverageCommand: go test --cover -race -coverprofile c.out ./... && sed -i -e 's/github.com\/ivanlemeshev\/proglog\///g' c.out
