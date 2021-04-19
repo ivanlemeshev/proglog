@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
-	srv := server.NewHTTPServer(":8080") // TODO: make the port configurable
+	const addr = ":8080" // TODO: make the address configurable
+	srv := server.NewHTTPServer(addr) 
 	log.Fatal(srv.ListenAndServe())
 }

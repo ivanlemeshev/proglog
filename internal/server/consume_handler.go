@@ -21,7 +21,7 @@ type consumeHandler struct {
 	log *Log
 }
 
-// NewConsumeHandler creates a new consume handler.
+// NewConsumeHandler creates a new consume handler function.
 func NewConsumeHandler(log *Log) http.HandlerFunc {
 	handler := &consumeHandler{
 		log: log,

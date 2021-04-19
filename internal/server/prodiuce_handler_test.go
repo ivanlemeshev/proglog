@@ -15,46 +15,54 @@ func TestProduceHandler(t *testing.T) {
 
 	handler := server.NewProduceHandler(log)
 
-	apitest.New().
-		HandlerFunc(handler).
-		Post("/").
-		JSON(`{"value": "cHJvZHVjZSBtZXNzYWdlIDA="}`). // "produce message 0"
-		Expect(t).
-		Status(http.StatusOK).
-		Body(`{"offset":0}`).
-		End()
+	tt := []struct {
+		name         string
+		requestBody  string
+		responseBody string
+	}{
+		{
+			"Produce message 0",
+			`{"value": "cHJvZHVjZSBtZXNzYWdlIDA="}`,
+			`{"offset":0}`,
+		},
+		{
+			"Produce message 1",
+			`{"value": "cHJvZHVjZSBtZXNzYWdlIDE="}`,
+			`{"offset":1}`,
+		},
+		{
+			"Produce message 2",
+			`{"value": "cHJvZHVjZSBtZXNzYWdlIDI="}`,
+			`{"offset":2}`,
+		},
+	}
 
-	apitest.New().
-		HandlerFunc(handler).
-		Post("/").
-		JSON(`{"value": "cHJvZHVjZSBtZXNzYWdlIDE="}`). // "produce message 1"
-		Expect(t).
-		Status(http.StatusOK).
-		Body(`{"offset":1}`).
-		End()
+	for _, tc := range tt {
+		testCase := tc
 
-	apitest.New().
-		HandlerFunc(handler).
-		Post("/").
-		JSON(`{"value": "cHJvZHVjZSBtZXNzYWdlIDI="}`). // "produce message 2"
-		Expect(t).
-		Status(http.StatusOK).
-		Body(`{"offset":2}`).
-		End()
-}
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
 
-func TestProduceHandler_BadRequest(t *testing.T) {
-	t.Parallel()
+			apitest.New().
+				HandlerFunc(handler).
+				Post("/").
+				JSON(testCase.requestBody).
+				Expect(t).
+				Status(http.StatusOK).
+				Body(testCase.responseBody).
+				End()
+		})
+	}
 
-	log := server.NewLog()
+	t.Run("Bad request", func(t *testing.T) {
+		t.Parallel()
 
-	handler := server.NewProduceHandler(log)
-
-	apitest.New().
-		HandlerFunc(handler).
-		Post("/").
-		Expect(t).
-		Body(`{"error":"Bad request"}`).
-		Status(http.StatusBadRequest).
-		End()
+		apitest.New().
+			HandlerFunc(handler).
+			Post("/").
+			Expect(t).
+			Body(`{"error":"Bad request"}`).
+			Status(http.StatusBadRequest).
+			End()
+	})
 }

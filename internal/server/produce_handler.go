@@ -19,7 +19,7 @@ type produceHandler struct {
 	log *Log
 }
 
-// NewProduceHandler creates a new produce handler.
+// NewProduceHandler creates a new produce handler function.
 func NewProduceHandler(log *Log) http.HandlerFunc {
 	handler := &produceHandler{
 		log: log,
