@@ -8,6 +8,6 @@ import (
 
 func main() {
 	const addr = ":8080" // TODO: make the address configurable
-	srv := server.NewHTTPServer(addr) 
+	srv := server.NewHTTPServer(addr)
 	log.Fatal(srv.ListenAndServe())
 }

@@ -13,6 +13,8 @@ linters:
   fast: false
   disable:
     - godox
+    - paralleltest
+    - tparallel
 
 issues:
   exclude-use-default: false

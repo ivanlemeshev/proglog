@@ -12,7 +12,6 @@ func TestProduceHandler(t *testing.T) {
 	t.Parallel()
 
 	log := server.NewLog()
-
 	handler := server.NewProduceHandler(log)
 
 	tt := []struct {
@@ -37,12 +36,10 @@ func TestProduceHandler(t *testing.T) {
 		},
 	}
 
-	for _, tc := range tt {
+	for _, tc := range tt { // nolint:paralleltest
 		testCase := tc
 
 		t.Run(testCase.name, func(t *testing.T) {
-			t.Parallel()
-
 			apitest.New().
 				HandlerFunc(handler).
 				Post("/").
@@ -53,16 +50,19 @@ func TestProduceHandler(t *testing.T) {
 				End()
 		})
 	}
+}
 
-	t.Run("Bad request", func(t *testing.T) {
-		t.Parallel()
+func TestProduceHandler_BadRequest(t *testing.T) {
+	t.Parallel()
 
-		apitest.New().
-			HandlerFunc(handler).
-			Post("/").
-			Expect(t).
-			Body(`{"error":"Bad request"}`).
-			Status(http.StatusBadRequest).
-			End()
-	})
+	log := server.NewLog()
+	handler := server.NewProduceHandler(log)
+
+	apitest.New().
+		HandlerFunc(handler).
+		Post("/").
+		Expect(t).
+		Body(`{"error":"Bad request"}`).
+		Status(http.StatusBadRequest).
+		End()
 }

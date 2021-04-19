@@ -12,12 +12,11 @@ func TestConsumeHandler(t *testing.T) {
 	t.Parallel()
 
 	log := server.NewLog()
+	handler := server.NewConsumeHandler(log)
 
 	_, _ = log.Append([]byte("consume message 0")) // "Y29uc3VtZSBtZXNzYWdlIDA="
 	_, _ = log.Append([]byte("consume message 1")) // "Y29uc3VtZSBtZXNzYWdlIDE="
 	_, _ = log.Append([]byte("consume message 2")) // "Y29uc3VtZSBtZXNzYWdlIDI="
-
-	handler := server.NewConsumeHandler(log)
 
 	tt := []struct {
 		name         string
@@ -57,29 +56,35 @@ func TestConsumeHandler(t *testing.T) {
 				End()
 		})
 	}
+}
 
-	t.Run("Bad request", func(t *testing.T) {
-		t.Parallel()
+func TestConsumeHandler_BadRequest(t *testing.T) {
+	t.Parallel()
 
-		apitest.New().
-			HandlerFunc(handler).
-			Get("/").
-			Expect(t).
-			Body(`{"error":"Bad request"}`).
-			Status(http.StatusBadRequest).
-			End()
-	})
+	log := server.NewLog()
+	handler := server.NewConsumeHandler(log)
 
-	t.Run("Not found", func(t *testing.T) {
-		t.Parallel()
+	apitest.New().
+		HandlerFunc(handler).
+		Get("/").
+		Expect(t).
+		Body(`{"error":"Bad request"}`).
+		Status(http.StatusBadRequest).
+		End()
+}
 
-		apitest.New().
-			HandlerFunc(handler).
-			Get("/").
-			JSON(`{"offset":123}`).
-			Expect(t).
-			Body(`{"error":"Record not found"}`).
-			Status(http.StatusNotFound).
-			End()
-	})
+func TestConsumeHandler_NotFound(t *testing.T) {
+	t.Parallel()
+
+	log := server.NewLog()
+	handler := server.NewConsumeHandler(log)
+
+	apitest.New().
+		HandlerFunc(handler).
+		Get("/").
+		JSON(`{"offset":123}`).
+		Expect(t).
+		Body(`{"error":"Record not found"}`).
+		Status(http.StatusNotFound).
+		End()
 }
